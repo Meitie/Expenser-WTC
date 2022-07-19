@@ -1,0 +1,1 @@
+HTTP/1.1 200 OK Date: Mon, 21 Feb 2022 09:59:20 GMT Content-Type: application/json Content-Length: 273  {"id":"4ce79bc1-c00f-46a0-9579-970c37841b69","amount":100.0,"date":"2021-10-12","description":"Airtime","paidBy":{"email":"herman@wethinkcode.co.za","id":1,"name":"Herman"},"sumOfSettledClaims":0.0,"sumOfUnsettledClaims":0.0,"nettAmount":100.0,"formattedAmount":"R 100,00"}

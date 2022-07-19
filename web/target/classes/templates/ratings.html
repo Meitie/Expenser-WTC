@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org/"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout.html}">
+<head></head>
+<body>
+<div layout:fragment="contents">
+    <!--        Set the session attribute (type) from the href in layout-->
+    <h2 id="ratings_by_" th:text='${session.by}'></h2>
+
+    <table id="ratings" >
+        <thead>
+        <tr>
+            <th>Who</th>
+            <th>Last Updated</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each='rating,iterStat: ${ratings}'>
+            <tr>
+                <td th:text='${#strings.arraySplit(rating.get("email"), "@")[0]}'>name</td>
+                <td  class="date" th:text='${rating.get("timeStamp")}'>name</td>
+                <td th:text='${rating.get("amount")}'>name</td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+</body>
+
+</html>

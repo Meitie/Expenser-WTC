@@ -1,0 +1,21 @@
+; These rsync filter rules specify which files to copy over the student's submission repo.
+; rsync has some quirks: the order of these rules matter
+; Read here to understand: https://unix.stackexchange.com/a/307863/329735
+
++ /monolith
++ /monolith/src
+- /monolith/src/main
++ /monolith/src/test
+
+; files to copy:
++ docker-compose.grading.yml
++ grade.sh
+
+; test packages to include explicitly:
++ /monolith/src/test/java/**/weshare/user
+
+;exclude other tests not explicitly included:
+- /monolith/src/test/java/**/weshare/model
+
+; exclude everything else by default:
+- /*

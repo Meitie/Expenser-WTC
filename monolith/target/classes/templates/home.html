@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout.html}">
+<head></head>
+<body>
+<div layout:fragment="contents">
+    <section class="expenseList">
+        <h2>My Expenses</h2>
+        <a id="add_expense" href="/newexpense">Add a new expense</a>
+
+        <p id="no_expenses" th:if="${#lists.isEmpty(expenses)}">You don't have any expenses!</p>
+
+        <table id="expenses" th:unless="${#lists.isEmpty(expenses)}">
+            <thead>
+            <tr>
+                <th>When</th>
+                <th>What</th>
+                <th class="money">How Much</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="expense,iterStat: ${expenses}">
+                <tr>
+                    <td th:id="'date_' + ${iterStat.count}" class="date" th:text="${expense.date}">2021/10/21</td>
+                    <td class="text">
+                        <a th:id="'claim_expense_' + ${iterStat.count}"
+                           href="#" th:href="@{/claimexpense(expenseId=${expense.id})}"
+                           th:text="${expense.description}">Lunch</a>
+                    </td>
+                    <td th:id="'amount_' + ${iterStat.count}" class="money"
+                        th:text="${#numbers.formatDecimal(expense.nettAmount,1,2,'POINT')}">200.00</td>
+                </tr>
+            </th:block>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="2"></td>
+                <td id="expenses_total" class="total"
+                    th:text="${#numbers.formatDecimal(totalExpenses,1,2,'POINT')}">200.00</td>
+            </tr>
+            </tfoot>
+        </table>
+    </section>
+
+    <section class="expenseList">
+        <h2>People who owe me</h2>
+        <p id="nobody_owes" th:if="${#lists.isEmpty(owedToMe)}">Nobody owes you any money!</p>
+
+        <table id="they_owe_me" th:unless="${#lists.isEmpty(owedToMe)}">
+            <thead>
+            <tr>
+                <th>Who</th>
+                <th>What</th>
+                <th>Due</th>
+                <th class="money">How Much</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="claim,iterStat: ${owedToMe}">
+                <tr th:id="'claim_'+${iterStat.count}">
+                    <td class="text" th:text="${claim.claimedFrom.name}">Mike</td>
+                    <td class="text" th:text="${claim.description}">Lunch</td>
+                    <td class="date" th:text="${claim.dueDate}">2021/11/15</td>
+                    <td class="money" th:text="${#numbers.formatDecimal(claim.amount,1,2,'POINT')}">150.00</td>
+                </tr>
+            </th:block>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3"></td>
+                <td id="they_owe_me_total" class="total"
+                    th:text="${#numbers.formatDecimal(totalOwedToMe,1,2,'POINT')}">200.00</td>
+            </tr>
+            </tfoot>
+        </table>
+    </section>
+
+    <section>
+        <h2>People I owe</h2>
+        <p id="owe_nobody" th:if="${#lists.isEmpty(owedToOthers)}">You don't owe anyone!</p>
+
+        <table id="i_owe_them" th:unless="${#lists.isEmpty(owedToOthers)}">
+            <thead>
+            <tr>
+                <th>Who</th>
+                <th>What</th>
+                <th>Due</th>
+                <th class="money">How Much</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="claim,iterStat: ${owedToOthers}">
+            <tr th:id="'claim_to_settle_' + ${iterStat.count}">
+                <td class="text" th:text="${claim.claimedBy.name}">Sett</td>
+                <td class="text">
+                    <a th:id="'settle_' + ${iterStat.count}"
+                       href="#" th:href="@{/settleclaim(claimId=${claim.id})}"
+                       th:text="${claim.description}">Lunch</a>
+                </td>
+                <td class="date" th:text="${claim.dueDate}">2021/11/15</td>
+                <td class="money" th:text="${#numbers.formatDecimal(claim.amount,1,2,'POINT')}">150.00</td>
+            </tr>
+            </th:block>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3"></td>
+                <td id="i_owe_them_total" class="total"
+                    th:text="${#numbers.formatDecimal(totalIOwe,1,2,'POINT')}">200.00</td>
+            </tr>
+            </tfoot>
+        </table>
+    </section>
+    <section class="nettExpenses" th:unless="${nettExpenses eq 0.00}">
+        <div id="nett_expenses"
+             th:text="${#numbers.formatDecimal(nettExpenses,1,2,'POINT')}">450.00</div>
+    </section>
+    </main>
+</div>
+</body>
+
+</html>
